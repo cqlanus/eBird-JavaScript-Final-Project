@@ -1,0 +1,32 @@
+body {
+  width: 960px;
+  margin: 0 auto;
+}
+
+#myForm {
+  margin: 0 auto;
+}
+
+label {
+  padding-left: 5%;
+}
+
+.button{
+  margin-left: 5%;
+  background: lightgreen;
+  padding: 1%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px black;
+}
+#myMap {
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+}
+#output{
+  float: right;
+}
+
+#myMap{
+  float: left;
+}

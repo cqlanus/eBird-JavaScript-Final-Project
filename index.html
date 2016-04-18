@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Final Project: eBird Client</title>
+<link rel="stylesheet" href="css/ebird.css">
+<script src="js/jquery-1.12.3.min.js"></script>
+</head>
+
+<body>
+  <div = id='myForm'>
+    <br>
+    <form>
+      <label>Zip Code: </label><input type='text' id='zipCode'></input>
+      <label>Time Frame: </label><input type='date' id='date'></input>
+      <label>Species: </label><select id='species'>
+        <option value='species1'>Species 1</option>
+        <option value='species2'>Species 2</option>
+        <option value='species3'>Species 3</option>
+      </select>
+      <span class='button' id='findBirds'>Find Birds</span>
+      <span class='button' id='reset'>Reset</span>
+    </form>
+  </div><br><br>
+  <div id='myMap'>
+  </div>
+  <div id='output'>
+  </div>
+
+
+  <script src='js/pubsub.js'></script>
+  <script src='js/eBird_new.js'></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3TQsX1KHuHZ6vb84_Xt-lWnbtGTk4Bk&callback=initMap"
+    type="text/javascript"></script>
+
+</body>
+</html>
