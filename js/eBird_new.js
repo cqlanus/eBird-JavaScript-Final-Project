@@ -44,6 +44,12 @@ var formData = (function(){
     //displayBirdList()
   }
 
+  // function getDate(){
+  //   var today = new Date();
+  //   today.toString();
+  //   console.log(today);
+  // }
+
 //   function displayBirdList(){
 //     var xhr = new XMLHttpRequest();
 //     xhr.open("GET",'http://ebird.org/ws1.1/ref/taxa/ebird?cat=species&fmt=json',true);
@@ -127,6 +133,17 @@ var setTheMap = (function(){
         title: 'Hello World!'
       });
 
+      // This event listener finds the map center each time map is dragged
+      map.addListener('dragend', function() {
+        var newGeoObj = {
+          lat: map.getCenter().lat(),
+          lng: map.getCenter().lng()
+        }
+          console.log(newGeoObj);
+          // Publishes new map center
+          events.emit('newGeoObj', newGeoObj);
+      });
+
       console.log(geoObj);
   }
 
@@ -151,21 +168,16 @@ var setTheMap = (function(){
     }
   }
 
-  // function dragMap(mapObj){
-  //   mapObj.addListener('drag', function() {
-  //     alert(map.getCenter());
-  //   })
-  // }
 
   function render(){
     events.emit('getMap', map);
-  //  dragMap(map);
   }
 
 })();
 
 var findTheBirds = (function(){
   events.on('getLocation', findBirds);
+  events.on('newGeoObj', findBirds);
 
   var output = document.getElementById('output');
   var birdData;
@@ -179,7 +191,7 @@ var findTheBirds = (function(){
     var myLatLng = geoObj;
     clearBox();
     var xhr = new XMLHttpRequest();
-    xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=2&back=7&maxResults=500&locale=en_US&fmt=json',true);
+    xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=9&back=7&maxResults=500&locale=en_US&fmt=json',true);
 
     xhr.send();
 
@@ -224,6 +236,16 @@ window.addEventListener('load', function(){
   var marker = new google.maps.Marker({
     position: myLatLng,
     map: map,
-    title: 'Hello World!'
+    title: 'Map Center'
+  });
+
+  map.addListener('dragend', function() {
+    var newGeoObj = {
+      lat: map.getCenter().lat(),
+      lng: map.getCenter().lng()
+    }
+      console.log(newGeoObj);
+      // Publishes new map center
+      events.emit('newGeoObj', newGeoObj);
   });
 });
