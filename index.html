@@ -12,11 +12,8 @@
     <form>
       <label>Zip Code: </label><input type='text' id='zipCode'></input>
       <label>Time Frame: </label><input type='date' id='date'></input>
-      <label>Species: </label><select id='species'>
-        <option value='species1'>Species 1</option>
-        <option value='species2'>Species 2</option>
-        <option value='species3'>Species 3</option>
-      </select>
+      <label>Species: </label><input type='text' id='species'>
+      </input>
       <span class='button' id='findBirds'>Find Birds</span>
       <span class='button' id='reset'>Reset</span>
     </form>
@@ -31,8 +28,8 @@
   <script src='js/onLoadModule.js'></script>
   <script src='js/formDataModule.js'></script>
   <script src='js/locationDataModule.js'></script>
+  <script src='js/mapModule.js'></script>
   <script src='js/birdDataModule.js'></script>
-  <script src='js/mapModule.js'></script>  
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3TQsX1KHuHZ6vb84_Xt-lWnbtGTk4Bk&callback=initMap"
     type="text/javascript"></script>

@@ -14,12 +14,6 @@ var setTheMap = (function(){
         center: myLatLng
       });
 
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: 'Hello World!'
-      });
-
       // This event listener finds the map center each time map is dragged
       map.addListener('dragend', function() {
         var newGeoObj = {
@@ -59,6 +53,7 @@ var setTheMap = (function(){
   function getOnLoadMap(map){
     return map;
   }
+  
   function render(){
     events.emit('getMap', map);
     events.on('onLoadMap', getOnLoadMap)

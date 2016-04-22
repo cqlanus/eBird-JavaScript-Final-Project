@@ -8,11 +8,11 @@ body {
 }
 
 label {
-  padding-left: 5%;
+  padding-left: 3%;
 }
 
 .button{
-  margin-left: 5%;
+  margin-left: 3%;
   background: lightgreen;
   padding: 1%;
   border-radius: 10px;

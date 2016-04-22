@@ -14,11 +14,7 @@ window.addEventListener('load', function(){
     center: myLatLng
   });
   events.emit('onLoadMap', map);
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    title: 'Map Center'
-  });
+
   events.emit('newGeoObj', myLatLng);
 
   map.addListener('dragend', function() {
