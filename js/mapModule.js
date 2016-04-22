@@ -34,7 +34,6 @@ var setTheMap = (function(){
   }
 
   function plotBirdData(birdData){
-    //var birdData = birdData;
     for (var i = 0; i<birdData.length; i++){
       var myLatLng = {lat: birdData[i].lat, lng: birdData[i].lng}
       var marker = new google.maps.Marker({

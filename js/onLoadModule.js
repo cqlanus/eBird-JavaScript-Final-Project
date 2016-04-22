@@ -9,6 +9,7 @@
 
 window.addEventListener('load', function(){
   var myLatLng = {lat: 34.0851479, lng: -118.33174};
+  events.emit('newGeoObj', myLatLng);
   var map = new google.maps.Map(document.getElementById('myMap'), {
     zoom: 12,
     center: myLatLng
