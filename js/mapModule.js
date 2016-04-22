@@ -2,6 +2,7 @@ var setTheMap = (function(){
   var map;
   events.on('getLocation', initMap);
   events.on('birdData', plotBirdData);
+  events.on('newGeoObj', initMap);
 
   render();
 
@@ -34,8 +35,10 @@ var setTheMap = (function(){
   }
 
   function plotBirdData(birdData){
+
     for (var i = 0; i<birdData.length; i++){
       var myLatLng = {lat: birdData[i].lat, lng: birdData[i].lng}
+
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
@@ -53,9 +56,12 @@ var setTheMap = (function(){
     }
   }
 
-
+  function getOnLoadMap(map){
+    return map;
+  }
   function render(){
     events.emit('getMap', map);
+    events.on('onLoadMap', getOnLoadMap)
   }
 
 })();

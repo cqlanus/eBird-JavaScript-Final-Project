@@ -8,18 +8,18 @@
 
 
 window.addEventListener('load', function(){
-  var myLatLng = {lat: 34.0851479, lng: -118.33174};
-  events.emit('newGeoObj', myLatLng);
+  var myLatLng = {lat: 34.0439082973197, lng: -118.25277576660153};
   var map = new google.maps.Map(document.getElementById('myMap'), {
     zoom: 12,
     center: myLatLng
   });
-
+  events.emit('onLoadMap', map);
   var marker = new google.maps.Marker({
     position: myLatLng,
     map: map,
     title: 'Map Center'
   });
+  events.emit('newGeoObj', myLatLng);
 
   map.addListener('dragend', function() {
     var newGeoObj = {
