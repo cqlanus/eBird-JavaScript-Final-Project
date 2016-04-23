@@ -7,7 +7,6 @@ var getTheLocation = (function(){
   var myLocation = {};
 
   events.on('getFormData', getGeo);
-  render();
 
   // Makes the AJAX request to convert Zip to lat/lng.
   function getGeo(newForm){
@@ -26,13 +25,10 @@ var getTheLocation = (function(){
         if (l.lng) {
           myLocation.lng = l.lng;
         }
-        render();
+        events.emit('getLocation', myLocation);
       }
     }
   }
 
-  function render() {
-    events.emit('getLocation', myLocation)
-  }
 
 })();

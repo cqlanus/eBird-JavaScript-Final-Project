@@ -1,5 +1,5 @@
 body {
-  width: 960px;
+  width: 1060px;
   margin: 0 auto;
 }
 
@@ -29,4 +29,8 @@ label {
 
 #myMap{
   float: left;
+}
+
+.birdDetails{
+  background: red;
 }

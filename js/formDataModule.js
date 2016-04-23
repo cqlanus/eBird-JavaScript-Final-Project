@@ -25,8 +25,13 @@ var formData = (function(){
     newForm = new FormElements(zipCode, date, species);
     if (newForm.zipCode == ''){
       alert('Please provide a location.');
+      return;
     }
-    console.log(newForm);
+    if (parseInt(newForm.date) > 30){
+      alert('Date must be less than 31 days ago.');
+      return;
+    }
+    console.log(newForm.date);
     events.emit('getFormData', newForm);
   }
 
@@ -34,6 +39,7 @@ var formData = (function(){
   function clearBox(){
     output.innerHTML = "";
     zipCode.value = ""
+    date.value = 7;
   }
 
   // Event listeners
@@ -42,12 +48,6 @@ var formData = (function(){
     reset.addEventListener('click', clearBox);
     //displayBirdList()
   }
-
-  // function getDate(){
-  //   var today = new Date();
-  //   today.toString();
-  //   console.log(today);
-  // }
 
 //   function displayBirdList(){
 //     var xhr = new XMLHttpRequest();

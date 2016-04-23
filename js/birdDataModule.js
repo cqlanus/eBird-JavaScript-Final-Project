@@ -2,8 +2,16 @@
 var findTheBirds = (function(){
   events.on('getLocation', findBirds);
   events.on('newGeoObj', findBirds);
+  //events.on('getFormData', getDays);
 
   var output = document.getElementById('output');
+
+  var daysAgo = document.getElementById('date');
+  var daysAgoValue;
+  daysAgo.addEventListener('change', function(){
+    daysAgoValue = this.value;
+  })
+
   var birdData;
   render();
 
@@ -14,9 +22,18 @@ var findTheBirds = (function(){
   function findBirds(geoObj){
 
     var myLatLng = geoObj;
+    // var form = formData;
+    // var daysAgo = getDays(obj);
+    // console.log(daysAgo);
     clearBox();
     var xhr = new XMLHttpRequest();
-    xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=8&back=5&maxResults=500&locale=en_US&fmt=json',true);
+    if (daysAgoValue){
+      xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=7&back='+daysAgoValue+'&maxResults=500&locale=en_US&fmt=json',true);
+    }
+    else {
+      xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=7&back='+daysAgo.value+'&maxResults=500&locale=en_US&fmt=json',true);
+
+    }
 
     xhr.send();
 
@@ -39,13 +56,9 @@ var findTheBirds = (function(){
       for (var i = 0; i<birdData.length; i++){
         var div = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].comName));
         div.className = 'bird';
-        div.id = 'bird '+ (i+1);
+        div.id = i + ' bird';
       }
     }
-  }
-
-  function addBirdDetails(birdData){
-
   }
 
   function createTextNode(el, msg){
@@ -56,7 +69,7 @@ var findTheBirds = (function(){
     return div;
   }
 
-  function highlightText(birdData){
+  function highlightText(){
     var divTags = document.getElementsByClassName('bird');
     for (var i = 0; i < divTags.length; i++){
       var theDiv = divTags[i];
@@ -73,17 +86,40 @@ var findTheBirds = (function(){
           evt.currentTarget.style.backgroundColor = 'white';
         }
       })();
+      //$(theDiv).click(addBirdDetails(birdData));
+      //, removeBirdDetails(evt))
       theDiv.onclick = (function(evt){
         return function(evt){
-          var div = document.createElement('DIV');
-          var text = 'This is a bird.'
-          var t = document.createTextNode(text);
-          div.appendChild(t);
-          evt.currentTarget.appendChild(div);
+          addBirdDetails(evt, birdData);
         }
       })();
+      // theDiv.onclick = (function(evt){
+      //   return function(evt){
+      //     removeBirdDetails(evt);
+      //   }
+      // })();
     }
   };
+
+    function addBirdDetails(evt, birdData){
+      var div = document.createElement('DIV');
+      var index = parseInt(evt.currentTarget.id)
+      var text = '<br>Latin name: '+birdData[index].sciName + '<br>';
+      text += 'How many: '+birdData[index].howMany+ '<br>';
+      text += 'Location: '+birdData[index].locName+ '<br>';
+      text += 'Date: '+birdData[index].obsDt+ '<br><br>';
+      div.className = 'birdDetails';
+      div.innerHTML = text;
+      evt.currentTarget.appendChild(div);
+    }
+
+    function removeBirdDetails(evt){
+      var birds = document.getElementsByClassName('bird');
+      var birdDetails = document.getElementsByClassName('birdDetails');
+      birds.addEventListener('click', function(){
+          evt.currentTarget.removeChild(birdDetails);
+      })
+    }
 
   function render(){
     var output = document.getElementById('output');
