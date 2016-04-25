@@ -54,9 +54,20 @@ var findTheBirds = (function(){
     }
     else{
       for (var i = 0; i<birdData.length; i++){
-        var div = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].comName));
-        div.className = 'bird';
-        div.id = i + ' bird';
+        var div1 = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].comName));
+        div1.className = 'bird';
+        div1.id = i + ' bird';
+
+        var text = '<br>Latin name: '+birdData[i].sciName + '<br>';
+        text += 'How many: '+birdData[i].howMany+ '<br>';
+        text += 'Location: '+birdData[i].locName+ '<br>';
+        text += 'Date: '+birdData[i].obsDt+ '<br><br>';
+
+        var div2 = createTextNode('DIV');
+        div2.innerHTML = text;
+        div2.className = 'birdDetails';
+        div2.className += ' hidden'
+        div2.id = i + ' birdDetails';
       }
     }
   }
@@ -70,47 +81,30 @@ var findTheBirds = (function(){
   }
 
   function highlightText(){
-    var divTags = document.getElementsByClassName('bird');
-    for (var i = 0; i < divTags.length; i++){
-      var theDiv = divTags[i];
-
       // event handler on spanTags to highlight on mouseover
-      // use a closure and self-invoking function to accomplish this
-      theDiv.onmouseover = (function(evt){
-        return function(evt){
-          evt.currentTarget.style.backgroundColor = 'yellow';
-        }
-      })();
-      theDiv.onmouseout = (function(evt){
-        return function(evt){
-          evt.currentTarget.style.backgroundColor = 'white';
-        }
-      })();
-      //$(theDiv).click(addBirdDetails(birdData));
-      //, removeBirdDetails(evt))
-      theDiv.onclick = (function(evt){
-        return function(evt){
-          addBirdDetails(evt, birdData);
-        }
-      })();
-      // theDiv.onclick = (function(evt){
-      //   return function(evt){
-      //     removeBirdDetails(evt);
-      //   }
-      // })();
-    }
-  };
+      $(".bird").mouseover(function(){
+        $(this).addClass('highlight');
+      });
+      $(".bird").mouseout(function(){
+        $(this).removeClass('highlight');
+      });
 
-    function addBirdDetails(evt, birdData){
-      var div = document.createElement('DIV');
-      var index = parseInt(evt.currentTarget.id)
-      var text = '<br>Latin name: '+birdData[index].sciName + '<br>';
-      text += 'How many: '+birdData[index].howMany+ '<br>';
-      text += 'Location: '+birdData[index].locName+ '<br>';
-      text += 'Date: '+birdData[index].obsDt+ '<br><br>';
-      div.className = 'birdDetails';
-      div.innerHTML = text;
-      evt.currentTarget.appendChild(div);
+  }
+
+    function showBirdDetails(){
+      var birds = document.getElementsByClassName('bird');
+      var birdDetails = document.getElementsByClassName('birdDetails');
+
+      for (var i = 0; i < birds.length; i++){
+        var index = parseInt(birds[i].id);
+      //  console.log('#'+index+' birdDetails ' + birdDetails[i].id);
+        // birds[i].addEventListener('click', function(){
+        //   alert("hello");
+          var element = document.getElementById(index+' birdDetails');
+
+          element.className = 'birdDetails';
+        // })
+      }
     }
 
     function removeBirdDetails(evt){
@@ -124,12 +118,7 @@ var findTheBirds = (function(){
   function render(){
     var output = document.getElementById('output');
     output.addEventListener('mouseover', highlightText);
+    output.addEventListener('click', showBirdDetails);
   }
-  // function getBirdRadius(currentMap){
-  //   var theMap = currentMap;
-  //   var zoomOnMap = theMap.getZoom();
-  //   var birdRadius = (15-zoomOnMap)*(Math.pow((4/3), (15-zoomOnMap)));
-  //   birdRadius = Math.floor(birdRadius);
-  //   return birdRadius;
-  // }
+
 })();
