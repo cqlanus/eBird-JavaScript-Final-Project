@@ -91,34 +91,22 @@ var findTheBirds = (function(){
 
   }
 
-    function showBirdDetails(){
-      var birds = document.getElementsByClassName('bird');
-      var birdDetails = document.getElementsByClassName('birdDetails');
+    function toggleBirdDetails(e){
 
-      for (var i = 0; i < birds.length; i++){
-        var index = parseInt(birds[i].id);
-      //  console.log('#'+index+' birdDetails ' + birdDetails[i].id);
-        // birds[i].addEventListener('click', function(){
-        //   alert("hello");
-          var element = document.getElementById(index+' birdDetails');
-
-          element.className = 'birdDetails';
-        // })
+      var index = parseInt(e.target.id);
+      var element = document.getElementById(index+' birdDetails');
+      if (element.className == 'birdDetails hidden'){
+        element.className = 'birdDetails';
       }
-    }
-
-    function removeBirdDetails(evt){
-      var birds = document.getElementsByClassName('bird');
-      var birdDetails = document.getElementsByClassName('birdDetails');
-      birds.addEventListener('click', function(){
-          evt.currentTarget.removeChild(birdDetails);
-      })
+      else{
+        element.className += ' hidden';
+      }
     }
 
   function render(){
     var output = document.getElementById('output');
     output.addEventListener('mouseover', highlightText);
-    output.addEventListener('click', showBirdDetails);
+    output.addEventListener('click', toggleBirdDetails);
   }
 
 })();
