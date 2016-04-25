@@ -88,11 +88,12 @@ var findTheBirds = (function(){
       })();
       //$(theDiv).click(addBirdDetails(birdData));
       //, removeBirdDetails(evt))
-      theDiv.onclick = (function(evt){
+      theDiv.addEventListener('click', (function(evt){
         return function(evt){
           addBirdDetails(evt, birdData);
         }
-      })();
+      })());
+
       // theDiv.onclick = (function(evt){
       //   return function(evt){
       //     removeBirdDetails(evt);
