@@ -34,3 +34,9 @@ label {
 .birdDetails{
   background: red;
 }
+.hidden{
+  display:none;
+}
+.highlight{
+  background-color: yellow;
+}
