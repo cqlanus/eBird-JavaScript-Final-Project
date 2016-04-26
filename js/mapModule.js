@@ -32,28 +32,31 @@ var setTheMap = (function(){
 
     for (var i = 0; i<birdData.length; i++){
       var myLatLng = {lat: birdData[i].lat, lng: birdData[i].lng}
+      var contentString = birdData[i].locName;
 
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
-        title: birdData[i].locName
+        title: contentString,
+        info: contentString
       });
-      // Need to create a closure to save the state of each birdData[i].locName
-      var contentString = birdData[i].locName;
+
       var infowindow = new google.maps.InfoWindow({
-        content: contentString,
         maxWidth: 200
       });
-      marker.addListener('click', function() {
-        infowindow.open(map, marker);
-      });
+      marker.addListener('click', function () {
+        // where I have added .html to the marker object.
+        infowindow.setContent(this.info);
+        infowindow.open(map, this);
+        events.emit('currentMarker', this.info);
+        });
     }
   }
 
   function getOnLoadMap(map){
     return map;
   }
-  
+
   function render(){
     events.emit('getMap', map);
     events.on('onLoadMap', getOnLoadMap)

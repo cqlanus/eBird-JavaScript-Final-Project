@@ -2,6 +2,7 @@
 var findTheBirds = (function(){
   events.on('getLocation', findBirds);
   events.on('newGeoObj', findBirds);
+  events.on('currentMarker', findBirdsByLocation);
   //events.on('getFormData', getDays);
 
   var output = document.getElementById('output');
@@ -92,7 +93,7 @@ var findTheBirds = (function(){
 
   }
 
-    function toggleBirdDetails(e){
+  function toggleBirdDetails(e){
 
       var index = parseInt(e.target.id);
       var element = document.getElementById(index+' birdDetails');
@@ -103,6 +104,18 @@ var findTheBirds = (function(){
         element.className += ' hidden';
       }
     }
+
+  function findBirdsByLocation(birdLoc){
+    var birdDivs = document.getElementsByClassName('bird');
+    for (var i = 0; i < birdData.length; i++){
+      birdDivs[i].style.borderStyle = "";
+
+      if (birdData[i].locName == birdLoc){
+        birdDivs[i].style.borderStyle = "solid";
+        birdDivs[i].style.borderColor = "lightblue";
+      }
+    }
+  }
 
   function render(){
     var output = document.getElementById('output');

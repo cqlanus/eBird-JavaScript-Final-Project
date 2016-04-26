@@ -17,6 +17,7 @@ label {
   padding: 1%;
   border-radius: 10px;
   box-shadow: 2px 2px 2px black;
+  cursor: pointer;
 }
 #myMap {
   width: 600px;
@@ -25,6 +26,8 @@ label {
 }
 #output{
   float: right;
+  width: 400px;
+  max-width: 400px;
 }
 
 #myMap{
@@ -32,7 +35,10 @@ label {
 }
 
 .birdDetails{
-  background: red;
+  background: lightgreen;
+  margin-left: 15px;
+  border-radius: 10px;
+  padding-left: 10px;
 }
 .hidden{
   display:none;
