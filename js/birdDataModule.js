@@ -112,7 +112,7 @@ var findTheBirds = (function(){
 
       if (birdData[i].locName == birdLoc){
         birdDivs[i].style.borderStyle = "solid";
-        birdDivs[i].style.borderColor = "lightblue";
+        birdDivs[i].style.borderColor = "orange";
       }
     }
   }
