@@ -13,7 +13,7 @@ var setTheMap = (function(){
     * The function adds a drag event listener to the map and then publishes the
     * new map center to the pubsub in order to find birds at that new center.
     */
-  function initMap(geoObj) {
+  window.initMap = function(geoObj) {
       var myLatLng = geoObj;
 
       map = new google.maps.Map(document.getElementById('myMap'), {
@@ -32,7 +32,7 @@ var setTheMap = (function(){
           events.emit('newGeoObj', newGeoObj);
       });
 
-      console.log(geoObj);
+      console.log(myLatLng);
   }
 
   /** This function is invoked when new bird data is found in the pubsub. Its job
@@ -83,11 +83,9 @@ var setTheMap = (function(){
 
   function render(){
     // Handling all the subscription to the pubsub module below.
-    events.on('getLocation', initMap);
     events.on('birdData', plotBirdData);
-    events.on('newGeoObj', initMap);
     events.emit('getMap', map);
-    events.on('onLoadMap', getOnLoadMap)
+    events.on('onLoadMap', getOnLoadMap);
   }
 
 })();
