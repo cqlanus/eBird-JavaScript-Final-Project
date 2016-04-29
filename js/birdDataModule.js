@@ -1,31 +1,32 @@
-
+/** This module controls the getting of bird data and writing it to the page
+  * via the sidebar. It also controls all functionality of the sidebar, like
+  * toggling details, highlighting text, and indicating birds at specific
+  * locations.
+  */
 var findTheBirds = (function(){
-  events.on('getLocation', findBirds);
-  events.on('newGeoObj', findBirds);
-  events.on('currentMarker', findBirdsByLocation);
-  //events.on('getFormData', getDays);
 
-  var output = document.getElementById('output');
-
-  var daysAgo = document.getElementById('date');
-  var daysAgoValue;
-  daysAgo.addEventListener('change', function(){
-    daysAgoValue = this.value;
-  })
-
+  // Declare variables that will be manipulated within the module.
   var birdData;
+  var daysAgoValue;
+  var daysAgo;
   render();
 
+  // This function clears the sidebar.
   function clearBox(){
     output.innerHTML = '';
   }
 
+  /** This is the major function the makes the AJAX request to the eBird API
+    * It takes a geolocation object (with a latitude and longitude) as an
+    * argument, and passes that as well as the daysAgo input value into the
+    * AJAX request URL.
+    *
+    * After successful AJAX request, it parses the data, publishes it to the
+    * pub/sub class, and writes the data to the page.
+    */
   function findBirds(geoObj){
 
     var myLatLng = geoObj;
-    // var form = formData;
-    // var daysAgo = getDays(obj);
-    // console.log(daysAgo);
     clearBox();
     var xhr = new XMLHttpRequest();
     if (daysAgoValue){
@@ -49,6 +50,11 @@ var findTheBirds = (function(){
     }
   }
 
+  /** This function writes all bird data to page. It creates DOM elements
+    * based on the birdData passed into the function as an argument. It writes the
+    * name of the bird as one element and the bird details as a separate element.
+    * The bird details are hidden via CSS.
+    */
   function writeBirdData(birdData){
     if(birdData.length == 0){
       createTextNode('DIV', 'No birds found in this area!')
@@ -73,6 +79,8 @@ var findTheBirds = (function(){
     }
   }
 
+  // This function defines how textNodes are created on the page.
+  // It takes an element name (string) and a message (string) as arguments.
   function createTextNode(el, msg){
     var div = document.createElement(el);
     var t = document.createTextNode(msg);
@@ -81,9 +89,9 @@ var findTheBirds = (function(){
     return div;
   }
 
+  // This function uses some jQuery to highlight text on mouseover and
+  // remove highlighting on mouseout.
   function highlightText(){
-      // event handler on spanTags to highlight on mouseover
-
       $(".bird").mouseover(function(){
         $(this).addClass('highlight');
       });
@@ -93,6 +101,10 @@ var findTheBirds = (function(){
 
   }
 
+  /** This function allows user to toggle visibility of of birdDetails
+    * by manipulating the class name of the element. It takes an event as
+    * a argument.
+    */
   function toggleBirdDetails(e){
 
       var index = parseInt(e.target.id);
@@ -105,6 +117,9 @@ var findTheBirds = (function(){
       }
     }
 
+  /** This function uses the location of a map marker (published to the pub/sub)
+    * as an argument and changes the styles of the bird element if it matches.
+    */
   function findBirdsByLocation(birdLoc){
     var birdDivs = document.getElementsByClassName('bird');
     for (var i = 0; i < birdData.length; i++){
@@ -117,10 +132,28 @@ var findTheBirds = (function(){
     }
   }
 
+  /** This is a render function invoked earlier in the module to collect necessary
+    * DOM elements on the page and attach event listeners to those DOM elements.
+    * It also subscribes to all published data to the pubsub class.
+    */
+
   function render(){
+    // Access DOM elements;
     var output = document.getElementById('output');
+    daysAgo = document.getElementById('date');
+
+    // Attach event listeners
+    daysAgo.addEventListener('change', function(){
+      daysAgoValue = this.value;
+    })
     output.addEventListener('mouseover', highlightText);
     output.addEventListener('click', toggleBirdDetails);
+
+    // Subscribe to necessary published data
+    events.on('getLocation', findBirds);
+    events.on('newGeoObj', findBirds);
+    events.on('currentMarker', findBirdsByLocation);
+    //events.on('getFormData', getDays);
   }
 
 })();
