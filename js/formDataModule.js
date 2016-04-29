@@ -1,13 +1,8 @@
-// This module is responsible for the form data at the top of the page.
+/** This module controls all functionality dealing with the form section of the
+  * page. Accesses and handles all form data and buttons.
+  */
+
 var formData = (function(){
-  // Gets the important DOM elements
-  var zipCode = document.getElementById('zipCode');
-  var date = document.getElementById('date');
-  var species = document.getElementById('species');
-  var findBirds = document.getElementById('findBirds');
-  var reset = document.getElementById('reset');
-  var output = document.getElementById('output');
-  var newForm = {};
 
   render();
 
@@ -42,12 +37,28 @@ var formData = (function(){
     date.value = 7;
   }
 
-  // Event listeners
   function render(){
+    // Gets the important DOM elements
+    var zipCode = document.getElementById('zipCode');
+    var date = document.getElementById('date');
+    var species = document.getElementById('species');
+    var findBirds = document.getElementById('findBirds');
+    var reset = document.getElementById('reset');
+    var output = document.getElementById('output');
+    var newForm = {};
+
+    // Attaches event listeners to those DOM elements.
     findBirds.addEventListener('click', triggerNewData);
     reset.addEventListener('click', clearBox);
     //displayBirdList()
   }
+
+  /** This will hopefully be a function that can make an AJAX request to the
+    * eBird API in order to create a text input that autocompletes with common
+    * or scientific bird names. In this way, the goal would be to search for
+    * bird sightings by species, finding the nearest bird to current location,
+    * or finding if bird happens to be within the map area.
+    */
 
 //   function displayBirdList(){
 //     var xhr = new XMLHttpRequest();
