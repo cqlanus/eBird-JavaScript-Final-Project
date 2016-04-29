@@ -1,12 +1,13 @@
-// This module leverages the Google Geocoding API to transform a zip code
-// into latitude and longitude data. It is subscribed to the form module.
-// It publishes its location data to pass to Google Maps and eBird APIs.
+/** This module leverages the Google Geocoding API to transform a zip code
+  * into latitude and longitude data. It is subscribed to the form module.
+  * It publishes its location data to pass to Google Maps and eBird APIs.
+  */
 var getTheLocation = (function(){
 
-  var submit = document.getElementById('submit');
+  // Declare variables.
   var myLocation = {};
 
-  events.on('getFormData', getGeo);
+  render();
 
   // Makes the AJAX request to convert Zip to lat/lng.
   function getGeo(newForm){
@@ -25,9 +26,19 @@ var getTheLocation = (function(){
         if (l.lng) {
           myLocation.lng = l.lng;
         }
+        // Publish geolocation object to pubsub.
         events.emit('getLocation', myLocation);
       }
     }
+  }
+
+  function render(){
+    // Access DOM elements.
+    var submit = document.getElementById('submit');
+
+
+    // Subscribe to pubsub data.
+    events.on('getFormData', getGeo);
   }
 
 
