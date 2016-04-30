@@ -5,6 +5,7 @@
 
 var setTheMap = (function(){
   var map;
+  var currentZoom;
   var markers = [];
 
   render();
@@ -18,7 +19,7 @@ var setTheMap = (function(){
       var myLatLng = geoObj;
 
       map = new google.maps.Map(document.getElementById('myMap'), {
-        zoom: 12,
+        zoom: currentZoom || 12,
         center: myLatLng
       });
 
@@ -49,8 +50,9 @@ var setTheMap = (function(){
             }
           });
       });
-
       // console.log(myLatLng);
+
+      map.addListener('zoom_changed', getMapZoom);
   }
 
   /** This function is invoked when new bird data is found in the pubsub. Its job
@@ -125,8 +127,13 @@ var setTheMap = (function(){
     markers = [];
   }
 
-  function render(){
+  function getMapZoom(){
+    currentZoom = map.getZoom();
+    console.log(currentZoom);
+    events.emit('mapZoom', currentZoom);
+  }
 
+  function render(){
     // Handling all the subscription to the pubsub module below.
     events.on('birdData', plotBirdData);
     events.emit('getMap', map);

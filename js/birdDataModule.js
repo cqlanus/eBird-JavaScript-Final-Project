@@ -7,8 +7,8 @@ var findTheBirds = (function(){
 
   // Declare variables that will be manipulated within the module.
   var birdData;
-  var daysAgoValue;
   var daysAgo;
+  var newRadius;
   render();
 
   // This function clears the sidebar.
@@ -25,17 +25,12 @@ var findTheBirds = (function(){
     * pub/sub class, and writes the data to the page.
     */
   function findBirds(geoObj){
-
+    var theRadius = newRadius || 7
     var myLatLng = geoObj;
     clearBox();
     var xhr = new XMLHttpRequest();
-    if (daysAgoValue){
-      xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=7&back='+daysAgoValue+'&maxResults=500&locale=en_US&fmt=json',true);
-    }
-    else {
-      xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist=7&back='+daysAgo.value+'&maxResults=500&locale=en_US&fmt=json',true);
 
-    }
+    xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+'&dist='+theRadius+'&back='+daysAgo.value+'&maxResults=500&locale=en_US&fmt=json',true);
 
     xhr.send();
 
@@ -65,7 +60,9 @@ var findTheBirds = (function(){
         div1.className = 'bird';
         div1.id = i + ' bird';
 
-        var text = '<br>Latin name: '+birdData[i].sciName + '<br>';
+        var latinString = splitLatinName(birdData[i]);
+
+        var text = '<br>Latin name: <a href="https://en.wikipedia.org/wiki/'+latinString+'"target="_blank">'+birdData[i].sciName+'</a><br>';
         text += 'How many: '+birdData[i].howMany+ '<br>';
         text += 'Location: '+birdData[i].locName+ '<br>';
         text += 'Date: '+birdData[i].obsDt+ '<br><br>';
@@ -78,7 +75,7 @@ var findTheBirds = (function(){
       }
     }
   }
-
+  // <a href="https://en.wikipedia.org/wiki/"+latinString+'>'+birdData[i].sciName+'</a><br>'
   // This function defines how textNodes are created on the page.
   // It takes an element name (string) and a message (string) as arguments.
   function createTextNode(el, msg){
@@ -132,6 +129,26 @@ var findTheBirds = (function(){
     }
   }
 
+
+  function setSearchRadius(currentZoom){
+    var startZoom = 12;
+    var newZoom = currentZoom;
+    var zoomDiff = (newZoom - startZoom);
+    var startRadius = 7;
+    newRadius = (startRadius - (2*zoomDiff));
+    console.log(newRadius);
+    return newRadius;
+  }
+
+  function splitLatinName(birdDataObj){
+    var latinName = birdDataObj.sciName;
+    var splitName = latinName.split(' ');
+    // console.log(splitName);
+    var combinedLatinNam = splitName.join('_');
+    // console.log(combinedLatinNam);
+    return combinedLatinNam;
+  }
+
   /** This is a render function invoked earlier in the module to collect necessary
     * DOM elements on the page and attach event listeners to those DOM elements.
     * It also subscribes to all published data to the pubsub class.
@@ -154,6 +171,7 @@ var findTheBirds = (function(){
     events.on('newGeoObj', findBirds);
     events.on('currentMarker', findBirdsByLocation);
     events.on('resetBtn', clearBox);
+    events.on('mapZoom', setSearchRadius);
     //events.on('getFormData', getDays);
   }
 

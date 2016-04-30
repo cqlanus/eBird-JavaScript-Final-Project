@@ -26,7 +26,7 @@ var formData = (function(){
       alert('Date must be less than 31 days ago.');
       return;
     }
-    console.log(newForm.date);
+    //console.log(newForm.date);
     events.emit('getFormData', newForm);
   }
 
