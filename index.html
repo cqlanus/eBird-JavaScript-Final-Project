@@ -12,7 +12,7 @@
   <div = id='myForm'>
     <br>
     <form>
-      <label>Zip Code: </label><input type='text' id='zipCode'></input>
+      <label>Zip Code: </label><input type='text' id='zipCode' autofocus></input>
       <label>Days Ago: </label><input type='number' min='1' max='30' value='7' id='date'></input>
       <label>Species: </label><input type='text' id='species'>
       </input>
@@ -33,7 +33,8 @@
   <script src='js/mapModule.js'></script>
   <script src='js/birdDataModule.js'></script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3TQsX1KHuHZ6vb84_Xt-lWnbtGTk4Bk&callback=initMap"
-    type="text/javascript"></script>
+  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3TQsX1KHuHZ6vb84_Xt-lWnbtGTk4Bk&callback=initMap"
+    type="text/javascript"></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 </body>
 </html>

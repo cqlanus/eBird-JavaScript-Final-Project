@@ -1,4 +1,4 @@
-/** This module controls all functionality dealing with the form section of the
+ /** This module controls all functionality dealing with the form section of the
   * page. Accesses and handles all form data and buttons.
   */
 
@@ -37,7 +37,13 @@ var formData = (function(){
     date.value = 7;
   }
 
+  // Testing here
+  function updateZipcode(zip){
+    zipCode.value = zip;
+  }
+
   function render(){
+
     // Gets the important DOM elements
     var zipCode = document.getElementById('zipCode');
     var date = document.getElementById('date');
@@ -46,6 +52,8 @@ var formData = (function(){
     var reset = document.getElementById('reset');
     var output = document.getElementById('output');
     var newForm = {};
+
+    events.on('zipCodeFromDrag', updateZipcode);
 
     // Attaches event listeners to those DOM elements.
     findBirds.addEventListener('click', triggerNewData);

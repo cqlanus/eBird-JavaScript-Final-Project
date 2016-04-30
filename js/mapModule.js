@@ -27,12 +27,26 @@ var setTheMap = (function(){
           lat: map.getCenter().lat(),
           lng: map.getCenter().lng()
         }
-          console.log(map.getZoom());
+          // console.log(map.getZoom());
           // Publishes new map center
           events.emit('newGeoObj', newGeoObj);
+
+          var geocoder = new google.maps.Geocoder;
+
+          geocoder.geocode({'latLng': newGeoObj}, function(results, status){
+            if (status == google.maps.GeocoderStatus.OK) {
+              var address = results[0].address_components;
+              for (var i = 0; i<address.length; i++){
+                if (parseInt(address[i].long_name) && address[i].long_name.length == 5) {
+                  var zip = address[i].long_name;
+                  events.emit('zipCodeFromDrag', zip);
+                }
+              }
+            }
+          });
       });
 
-      console.log(myLatLng);
+      // console.log(myLatLng);
   }
 
   /** This function is invoked when new bird data is found in the pubsub. Its job

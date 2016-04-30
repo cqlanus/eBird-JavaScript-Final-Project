@@ -39,6 +39,10 @@ label {
   margin-left: 15px;
   border-radius: 10px;
   padding-left: 10px;
+  cursor: pointer;
+}
+.bird{
+  cursor: pointer;
 }
 .hidden{
   display:none;

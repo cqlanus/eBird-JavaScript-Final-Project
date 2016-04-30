@@ -43,7 +43,7 @@ var findTheBirds = (function(){
     xhr.onreadystatechange=function(){
       if (this.readyState==4 && this.status==200){
         birdData = JSON.parse(this.response);
-        console.log(birdData);
+        // console.log(birdData);
         events.emit('birdData', birdData)
         writeBirdData(birdData);
       }

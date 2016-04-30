@@ -13,26 +13,25 @@
 window.addEventListener('load', function(){
   events.on('getLocation', initMap);
   events.on('newGeoObj', initMap);
-  
+
   var myLatLng = {lat: 34.0439082973197, lng: -118.25277576660153};
   var map = new google.maps.Map(document.getElementById('myMap'), {
     zoom: 12,
     center: myLatLng
   });
-  console.log('before emit');
   events.emit('onLoadMap', map);
-  console.log('after emit 1');
 
   events.emit('newGeoObj', myLatLng);
-  console.log('after emit 2');
 
   map.addListener('dragend', function() {
     var newGeoObj = {
       lat: map.getCenter().lat(),
       lng: map.getCenter().lng()
     }
-      console.log(newGeoObj);
-      // Publishes new map center
-      events.emit('newGeoObj', newGeoObj);
+
+  // Publishes new map center
+  events.emit('newGeoObj', newGeoObj);
+
+  
   });
 });
