@@ -1,6 +1,6 @@
 // TODO:
 // 1. Figure out how to manage window.onload - don't want to recreate entire functionality
-// 2. Functionality for the form - autocomplete bird list; filter by date range
+// 2. Functionality for the form - autocomplete bird list
 // 3. Interactivity with markers and bird list - hover over birds, highlight marker.
 // 4. Info menus for bird info - AJAX request to wikipedia?
 // 5. Style the page
@@ -32,6 +32,6 @@ window.addEventListener('load', function(){
   // Publishes new map center
   events.emit('newGeoObj', newGeoObj);
 
-  
+
   });
 });

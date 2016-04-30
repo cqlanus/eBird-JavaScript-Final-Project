@@ -103,7 +103,7 @@ var findTheBirds = (function(){
 
   /** This function allows user to toggle visibility of of birdDetails
     * by manipulating the class name of the element. It takes an event as
-    * a argument.
+    * an argument.
     */
   function toggleBirdDetails(e){
 
@@ -153,6 +153,7 @@ var findTheBirds = (function(){
     events.on('getLocation', findBirds);
     events.on('newGeoObj', findBirds);
     events.on('currentMarker', findBirdsByLocation);
+    events.on('resetBtn', clearBox);
     //events.on('getFormData', getDays);
   }
 

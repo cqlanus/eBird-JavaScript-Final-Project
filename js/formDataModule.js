@@ -42,6 +42,10 @@ var formData = (function(){
     zipCode.value = zip;
   }
 
+  function pressReset(){
+    events.emit('resetBtn', true);
+  }
+
   function render(){
 
     // Gets the important DOM elements
@@ -57,8 +61,8 @@ var formData = (function(){
 
     // Attaches event listeners to those DOM elements.
     findBirds.addEventListener('click', triggerNewData);
-    reset.addEventListener('click', clearBox);
-    //displayBirdList()
+    //reset.addEventListener('click', clearBox);
+    reset.addEventListener('click', pressReset);
   }
 
   /** This will hopefully be a function that can make an AJAX request to the

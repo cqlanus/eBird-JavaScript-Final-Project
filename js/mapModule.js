@@ -5,6 +5,7 @@
 
 var setTheMap = (function(){
   var map;
+  var markers = [];
 
   render();
 
@@ -31,12 +32,15 @@ var setTheMap = (function(){
           // Publishes new map center
           events.emit('newGeoObj', newGeoObj);
 
+
+          // Reverse geocoder acts to create and publish a zip code on each drag event
           var geocoder = new google.maps.Geocoder;
 
           geocoder.geocode({'latLng': newGeoObj}, function(results, status){
             if (status == google.maps.GeocoderStatus.OK) {
               var address = results[0].address_components;
               for (var i = 0; i<address.length; i++){
+                // find results that can be coerced to number, and whose length is 5
                 if (parseInt(address[i].long_name) && address[i].long_name.length == 5) {
                   var zip = address[i].long_name;
                   events.emit('zipCodeFromDrag', zip);
@@ -55,8 +59,7 @@ var setTheMap = (function(){
     * and the name of the bird. Using these data, this function creates a marker
     * (and info window for each marker) on the map for each bird sighting, publishing
     * each marker to the pubsub so as to handle click events and write data to the sidebar.
-
-  */
+    */
   function plotBirdData(birdData){
 
     // Loop through bird data.
@@ -67,12 +70,14 @@ var setTheMap = (function(){
       var contentString = birdData[i].locName;
 
       // Generate a new marker for each item in the birdData array.
+      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
       var marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
         title: contentString,
         info: contentString
       });
+      markers.push(marker);
 
       // And generate a new infowindow for each item in the birdData array.
       var infowindow = new google.maps.InfoWindow({
@@ -87,6 +92,8 @@ var setTheMap = (function(){
         // Publish the location name to manipulate the sidebar on each click.
         events.emit('currentMarker', this.info);
         });
+
+    //  console.log(marker);
     }
   }
 
@@ -95,11 +102,36 @@ var setTheMap = (function(){
     return map;
   }
 
+  // Sets the map on all markers in the array.
+  function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  function clearMarkers() {
+    setMapOnAll(null);
+  }
+
+  // Shows any markers currently in the array.
+  function showMarkers() {
+    setMapOnAll(map);
+  }
+
+  // Deletes all markers in the array by removing references to them.
+  function deleteMarkers() {
+    clearMarkers();
+    markers = [];
+  }
+
   function render(){
+
     // Handling all the subscription to the pubsub module below.
     events.on('birdData', plotBirdData);
     events.emit('getMap', map);
     events.on('onLoadMap', getOnLoadMap);
+    events.on('resetBtn', deleteMarkers)
   }
 
 })();
