@@ -58,11 +58,13 @@ var findTheBirds = (function(){
       for (var i = 0; i<birdData.length; i++){
         var div1 = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].comName));
         div1.className = 'bird';
-        div1.id = i + ' bird';
+        div1.id = i + 'bird';
 
-        var latinString = splitLatinName(birdData[i]);
+        var latinString = splitLatinName(birdData[i].sciName);
+        var commString = splitLatinName(birdData[i].comName);
 
-        var text = '<br>Latin name: <a href="https://en.wikipedia.org/wiki/'+latinString+'"target="_blank">'+birdData[i].sciName+'</a><br>';
+        var text = '<br>Common name: <a href="https://www.allaboutbirds.org/guide/'+commString+'"target="_blank">'+birdData[i].comName+'</a><br>';
+        text += 'Latin name: <a href="https://en.wikipedia.org/wiki/'+latinString+'"target="_blank">'+birdData[i].sciName+'</a><br>';
         text += 'How many: '+birdData[i].howMany+ '<br>';
         text += 'Location: '+birdData[i].locName+ '<br>';
         text += 'Date: '+birdData[i].obsDt+ '<br><br>';
@@ -71,7 +73,7 @@ var findTheBirds = (function(){
         div2.innerHTML = text;
         div2.className = 'birdDetails';
         div2.className += ' hidden'
-        div2.id = i + ' birdDetails';
+        div2.id = i + 'birdDetails';
       }
     }
   }
@@ -103,16 +105,17 @@ var findTheBirds = (function(){
     * an argument.
     */
   function toggleBirdDetails(e){
-
-      var index = parseInt(e.target.id);
-      var element = document.getElementById(index+' birdDetails');
-      if (element.className == 'birdDetails hidden'){
-        element.className = 'birdDetails';
-      }
-      else{
-        element.className += ' hidden';
-      }
+    var index = parseInt(e.target.id);
+    // console.log(index);
+    var element = document.getElementById(index+'birdDetails');
+    if ($(element).hasClass('hidden')){
+      $(element).removeClass('hidden');
     }
+    else {
+      $(element).addClass('hidden');
+    }
+
+  }
 
   /** This function uses the location of a map marker (published to the pub/sub)
     * as an argument and changes the styles of the bird element if it matches.
@@ -136,12 +139,18 @@ var findTheBirds = (function(){
     var zoomDiff = (newZoom - startZoom);
     var startRadius = 7;
     newRadius = (startRadius - (2*zoomDiff));
+    if (newRadius < 1){
+      newRadius = 1;
+    }
+    else if (newRadius > 50){
+      newRadius = 50;
+    }
     console.log(newRadius);
     return newRadius;
   }
 
   function splitLatinName(birdDataObj){
-    var latinName = birdDataObj.sciName;
+    var latinName = birdDataObj;
     var splitName = latinName.split(' ');
     // console.log(splitName);
     var combinedLatinNam = splitName.join('_');
@@ -159,12 +168,15 @@ var findTheBirds = (function(){
     var output = document.getElementById('output');
     daysAgo = document.getElementById('date');
 
+    var birdNames = document.getElementsByClassName('bird');
+
     // Attach event listeners
     daysAgo.addEventListener('change', function(){
       daysAgoValue = this.value;
     })
     output.addEventListener('mouseover', highlightText);
-    output.addEventListener('click', toggleBirdDetails);
+
+    $("#output").click(toggleBirdDetails);
 
     // Subscribe to necessary published data
     events.on('getLocation', findBirds);
