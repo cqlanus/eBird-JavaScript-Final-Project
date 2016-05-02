@@ -80,6 +80,9 @@ var findTheBirds = (function(){
     if (speciesFilter == false){
       events.on('getLocation', findNearbyBirds);
       events.off('getLocation', findBirdsBySpecies);
+      events.on('newGeoObj', findNearbyBirds);
+      events.off('newGeoObj', findBirdsBySpecies);
+
 
       // events.on('newGeoObj', findNearbyBirds);
       console.log('findNearbyBirds should work. speciesFilter = '+ speciesFilter)
@@ -87,6 +90,9 @@ var findTheBirds = (function(){
     else{
       events.on('getLocation', findBirdsBySpecies);
       events.off('getLocation', findNearbyBirds);
+      events.on('newGeoObj', findBirdsBySpecies);
+      events.off('newGeoObj', findNearbyBirds);
+
 
       // events.on('newGeoObj', findBirdsBySpecies);
       console.log('findBirdsBySpecies should work. speciesFilter = '+ speciesFilter)
