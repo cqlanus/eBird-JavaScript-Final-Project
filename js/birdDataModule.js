@@ -79,11 +79,15 @@ var findTheBirds = (function(){
   function checkSearchCriteria(speciesFilter){
     if (speciesFilter == false){
       events.on('getLocation', findNearbyBirds);
+      events.off('getLocation', findBirdsBySpecies);
+
       // events.on('newGeoObj', findNearbyBirds);
       console.log('findNearbyBirds should work. speciesFilter = '+ speciesFilter)
     }
     else{
       events.on('getLocation', findBirdsBySpecies);
+      events.off('getLocation', findNearbyBirds);
+
       // events.on('newGeoObj', findBirdsBySpecies);
       console.log('findBirdsBySpecies should work. speciesFilter = '+ speciesFilter)
 
@@ -223,7 +227,7 @@ var findTheBirds = (function(){
     $("#output").click(toggleBirdDetails);
 
     // Subscribe to necessary published data
-    // events.on('getLocation', findNearbyBirds);
+    events.on('getLocation', findNearbyBirds);
     events.on('newGeoObj', findNearbyBirds);
     events.on('currentMarker', findBirdsByLocation);
     events.on('resetBtn', clearBox);
