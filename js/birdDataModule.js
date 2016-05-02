@@ -54,10 +54,12 @@ var findTheBirds = (function(){
   function findBirdsBySpecies(geoObj){
     var theRadius = newRadius || 7
     var myLatLng = geoObj;
+    var speciesName = species.value;
+    var speciesNameArray = splitName(speciesName);
     clearBox();
     var xhr = new XMLHttpRequest();
 
-    xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo_spp/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+' &sci=branta%20canadensis&dist='+theRadius+'&back=5&maxResults=500&locale=en_US&fmt=json&includeProvisional=true',true);
+    xhr.open("GET",'http://ebird.org/ws1.1/data/obs/geo_spp/recent?lng='+myLatLng.lng+'&lat='+myLatLng.lat+' &sci='+speciesNameArray[0]+'%20'+speciesNameArray[1]+'&dist='+theRadius+'&back='+daysAgo.value+'&maxResults=500&locale=en_US&fmt=json&includeProvisional=true',true);
 
     xhr.send();
 
@@ -83,8 +85,6 @@ var findTheBirds = (function(){
       events.on('newGeoObj', findNearbyBirds);
       events.off('newGeoObj', findBirdsBySpecies);
 
-
-      // events.on('newGeoObj', findNearbyBirds);
       console.log('findNearbyBirds should work. speciesFilter = '+ speciesFilter)
     }
     else{
@@ -93,10 +93,19 @@ var findTheBirds = (function(){
       events.on('newGeoObj', findBirdsBySpecies);
       events.off('newGeoObj', findNearbyBirds);
 
-
-      // events.on('newGeoObj', findBirdsBySpecies);
       console.log('findBirdsBySpecies should work. speciesFilter = '+ speciesFilter)
 
+    }
+  }
+  var speciesFilterOn;
+  function checkSpeciesFilter(speciesFilter){
+    if (speciesFilter == true){
+      speciesFilterOn = true
+      return speciesFilterOn;
+    }
+    else {
+      speciesFilterOn = false;
+      return speciesFilterOn;
     }
   }
   /** This function writes all bird data to page. It creates DOM elements
@@ -110,12 +119,17 @@ var findTheBirds = (function(){
     }
     else{
       for (var i = 0; i<birdData.length; i++){
-        var div1 = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].comName));
+        if(speciesFilterOn == true){
+          var div1 = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].locName));
+        }
+        else {
+          var div1 = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].comName));
+        }
         div1.className = 'bird';
         div1.id = i + 'bird';
 
-        var latinString = splitLatinName(birdData[i].sciName);
-        var commString = splitLatinName(birdData[i].comName);
+        var latinString = normalizeName(birdData[i].sciName);
+        var commString = normalizeName(birdData[i].comName);
 
         var text = '<br>Common name: <a href="https://www.allaboutbirds.org/guide/'+commString+'"target="_blank">'+birdData[i].comName+'</a><br>';
         text += 'Latin name: <a href="https://en.wikipedia.org/wiki/'+latinString+'"target="_blank">'+birdData[i].sciName+'</a><br>';
@@ -131,7 +145,7 @@ var findTheBirds = (function(){
       }
     }
   }
-  // <a href="https://en.wikipedia.org/wiki/"+latinString+'>'+birdData[i].sciName+'</a><br>'
+
   // This function defines how textNodes are created on the page.
   // It takes an element name (string) and a message (string) as arguments.
   function createTextNode(el, msg){
@@ -186,7 +200,10 @@ var findTheBirds = (function(){
     }
   }
 
-
+  /** This function takes the map's current zoom as an argument, then adjusts the
+    * the radius value, to be passed into the eBird AJAX request. The limits on
+    * the radius value are a response to the eBird radius limits.
+    */
   function setSearchRadius(currentZoom){
     var startZoom = 12;
     var newZoom = currentZoom;
@@ -203,13 +220,20 @@ var findTheBirds = (function(){
     return newRadius;
   }
 
-  function splitLatinName(birdDataObj){
-    var latinName = birdDataObj;
-    var splitName = latinName.split(' ');
-    // console.log(splitName);
-    var combinedLatinNam = splitName.join('_');
-    // console.log(combinedLatinNam);
-    return combinedLatinNam;
+  function normalizeName(birdDataObj){
+    var splitTheName = splitName(birdDataObj);
+    // Joins the array with underscore
+    var combinedName = splitTheName.join('_');
+    // console.locombinedNameg(combinedName);
+    return combinedName;
+  }
+
+  function splitName(birdDataObj){
+    // Removes apostrophes
+    var theName = birdDataObj.replace("'", "");
+    // Splits into an array
+    var splitTheName = theName.split(' ');
+    return splitTheName;
   }
 
   /** This is a render function invoked earlier in the module to collect necessary
@@ -221,7 +245,7 @@ var findTheBirds = (function(){
     // Access DOM elements;
     var output = document.getElementById('output');
     daysAgo = document.getElementById('date');
-
+    var species = document.getElementById('species');
     var birdNames = document.getElementsByClassName('bird');
 
     // Attach event listeners
@@ -239,7 +263,7 @@ var findTheBirds = (function(){
     events.on('resetBtn', clearBox);
     events.on('mapZoom', setSearchRadius);
     events.on('speciesFilter', checkSearchCriteria);
-    //events.on('getFormData', getDays);
+    events.on('speciesFilter', checkSpeciesFilter);
   }
 
 })();

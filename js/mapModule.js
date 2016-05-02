@@ -127,6 +127,7 @@ var setTheMap = (function(){
     markers = [];
   }
 
+  // This function gets and publishes map's current zoom.
   function getMapZoom(){
     currentZoom = map.getZoom();
     console.log(currentZoom);

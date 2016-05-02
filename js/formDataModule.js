@@ -26,6 +26,11 @@ var formData = (function(){
       alert('Date must be less than 31 days ago.');
       return;
     }
+    if (filter2.checked && newForm.species == ''){
+      alert('Please provide a species.');
+      return;
+
+    }
     //console.log(newForm.date);
     events.emit('getFormData', newForm);
   }
