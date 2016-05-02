@@ -46,6 +46,23 @@ var formData = (function(){
     events.emit('resetBtn', true);
   }
 
+  /** This function is supposed to check whether the filter by species button
+    * is checked. If so, it will publish true, otherwise, it will publish false.
+    */
+  function speciesFilter(){
+    var bySpecies;
+    if (filter2.checked){
+      speciesSpan.style.display = 'inline';
+      bySpecies = true;
+    }
+    else{
+      speciesSpan.style.display = 'none';
+      bySpecies = false;
+    }
+    events.emit('speciesFilter', bySpecies);
+
+  }
+
   function render(){
 
     // Gets the important DOM elements
@@ -55,7 +72,12 @@ var formData = (function(){
     var findBirds = document.getElementById('findBirds');
     var reset = document.getElementById('reset');
     var output = document.getElementById('output');
+    var filter2 = document.getElementById('filter2');
+    var speciesSpan = document.getElementById('speciesSpan');
+
     var newForm = {};
+
+    speciesSpan.style.display = 'none';
 
     events.on('zipCodeFromDrag', updateZipcode);
 
@@ -63,32 +85,7 @@ var formData = (function(){
     findBirds.addEventListener('click', triggerNewData);
     //reset.addEventListener('click', clearBox);
     reset.addEventListener('click', pressReset);
+    filter2.addEventListener('click', speciesFilter)
   }
 
-  /** This will hopefully be a function that can make an AJAX request to the
-    * eBird API in order to create a text input that autocompletes with common
-    * or scientific bird names. In this way, the goal would be to search for
-    * bird sightings by species, finding the nearest bird to current location,
-    * or finding if bird happens to be within the map area.
-    */
-
-//   function displayBirdList(){
-//     var xhr = new XMLHttpRequest();
-//     xhr.open("GET",'http://ebird.org/ws1.1/ref/taxa/ebird?cat=species&fmt=json',true);
-//     xhr.send();
-//
-//     xhr.onreadystatechange=function(){
-//       if (this.readyState==4 && this.status==200){
-//         var birdList = JSON.parse(this.response);
-//         console.log(birdList[145].comName)
-//
-//         $('#autocomplete').autocomplete({
-//         lookup: birdList,
-//         onSelect: function (suggestion) {
-//         alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-//     }
-// });
-//       }
-//     }
-//   }
 })();

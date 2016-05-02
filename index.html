@@ -14,16 +14,21 @@
     <form>
       <label>Zip Code: </label><input type='text' id='zipCode' autofocus></input>
       <label>Days Ago: </label><input type='number' min='1' max='30' value='7' id='date'></input>
+      <span style='display: none'id='speciesSpan'>
       <label>Species: </label><input type='text' id='species'>
-      </input>
+    </input></span>
       <span class='button' id='findBirds'>Find Birds</span>
       <span class='button' id='reset'>Reset</span>
+      <br><br>
+      <label>Filter by species: </label><input type='checkbox' id='filter2'>
+
     </form>
   </div><br><br>
   <div id='myMap'>
   </div>
   <div id='output'>
   </div>
+
 
 
   <script src='js/pubsub.js'></script>

@@ -23,6 +23,17 @@ label {
   width: 600px;
   height: 400px;
   margin: 0 auto;
+  float: left;
+
+
+}
+#details {
+  width: 600px;
+  height: 400px;
+  margin: 0 auto;
+  background: lightblue;
+  float: left;
+
 }
 #output{
   float: right;
