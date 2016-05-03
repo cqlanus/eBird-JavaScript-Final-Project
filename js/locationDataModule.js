@@ -32,10 +32,40 @@ var getTheLocation = (function(){
     }
   }
 
+  function getLocation(){
+
+            if(navigator.geolocation){
+               // timeout at 60000 milliseconds (60 seconds)
+               var options = {timeout:60000};
+               navigator.geolocation.getCurrentPosition(getPosition, errorHandler, options);
+            }
+
+            else{
+               alert("Sorry, browser does not support geolocation!");
+            }
+         }
+
+  function getPosition(position){
+    console.log(position);
+    var currentLoc = {lat: position.coords.latitude, lng: position.coords.longitude};
+    events.emit('newGeoObj', currentLoc);
+  }
+
+  function errorHandler(err) {
+            if(err.code == 1) {
+               console.log("Error: Access is denied!");
+            }
+
+            else if( err.code == 2) {
+               console.log("Error: Position is unavailable!");
+            }
+         }
+
   function render(){
     // Access DOM elements.
     var submit = document.getElementById('submit');
-
+    var logLocation = document.getElementById('logLocation');
+    logLocation.addEventListener('click', getLocation)
 
     // Subscribe to pubsub data.
     events.on('getFormData', getGeo);

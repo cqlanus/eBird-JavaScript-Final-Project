@@ -2,8 +2,11 @@
 <html>
 <head>
 <title>Final Project: eBird Client</title>
+<meta charset="UTF-8">
 <link rel="stylesheet" href="css/ebird.css">
+<link rel="stylesheet" href="css/jquery-ui.min.css">
 <script src="js/jquery-1.12.3.min.js"></script>
+ <script src="js/jquery-ui.min.js"></script>
 
 
 </head>
@@ -15,13 +18,13 @@
       <label>Zip Code: </label><input type='text' id='zipCode' autofocus></input>
       <label>Days Ago: </label><input type='number' min='1' max='30' value='7' id='date'></input>
       <span style='display: none'id='speciesSpan'>
-      <label>Species: </label><input type='text' id='species' placeholder="Latin Name Only">
+      <label>Species: </label><input type='text' id='species' >
     </input></span>
       <span class='button' id='findBirds'>Find Birds</span>
       <span class='button' id='reset'>Reset</span>
       <br><br>
       <label>Filter by species: </label><input type='checkbox' id='filter2'>
-
+      <button id='logLocation' type='button'>Go to Current Location</button>
     </form>
   </div><br><br>
   <div id='myMap'>
@@ -37,6 +40,7 @@
   <script src='js/locationDataModule.js'></script>
   <script src='js/mapModule.js'></script>
   <script src='js/birdDataModule.js'></script>
+  <script src='js/birdList.js'></script>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL3TQsX1KHuHZ6vb84_Xt-lWnbtGTk4Bk&callback=initMap"
     type="text/javascript"></script>

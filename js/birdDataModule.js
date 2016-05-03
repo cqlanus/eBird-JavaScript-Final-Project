@@ -54,7 +54,7 @@ var findTheBirds = (function(){
   function findBirdsBySpecies(geoObj){
     var theRadius = newRadius || 7
     var myLatLng = geoObj;
-    var speciesName = species.value;
+    var speciesName = theSciName;
     var speciesNameArray = splitName(speciesName);
     clearBox();
     var xhr = new XMLHttpRequest();
@@ -236,6 +236,12 @@ var findTheBirds = (function(){
     return splitTheName;
   }
 
+  var theSciName = "test";
+  function getSciName(sciName){
+    theSciName = sciName
+    console.log(theSciName);
+    return theSciName;
+  }
   /** This is a render function invoked earlier in the module to collect necessary
     * DOM elements on the page and attach event listeners to those DOM elements.
     * It also subscribes to all published data to the pubsub class.
@@ -264,6 +270,7 @@ var findTheBirds = (function(){
     events.on('mapZoom', setSearchRadius);
     events.on('speciesFilter', checkSearchCriteria);
     events.on('speciesFilter', checkSpeciesFilter);
+    events.on('theSciName', getSciName)
   }
 
 })();
