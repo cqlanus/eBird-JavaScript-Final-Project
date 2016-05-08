@@ -47,9 +47,10 @@ var findTheBirds = (function(){
   }
 
   /** This function is supposed to make an AJAX request to the eBird API to look
-    * for nearby sightings of a specific species. At this point, I am only making
-    * a request for Canada goose, but eventually, I will be able to pass in a
-    * normalized scientific bird name.
+    * for nearby sightings of a specific species. At this point, it is able to pass
+    * in a normalized scientific bird name from the autcomplete input, as well as the
+    * daysAgo input value, into the AJAX request URL. Then parses through the JSON
+    * data and writes it to the page.
     */
   function findBirdsBySpecies(geoObj){
     var theRadius = newRadius || 7
@@ -97,6 +98,10 @@ var findTheBirds = (function(){
 
     }
   }
+
+
+  /** This function checks if the filter by species checkbox is checked.
+    */
   var speciesFilterOn;
   function checkSpeciesFilter(speciesFilter){
     if (speciesFilter == true){
@@ -108,6 +113,8 @@ var findTheBirds = (function(){
       return speciesFilterOn;
     }
   }
+
+
   /** This function writes all bird data to page. It creates DOM elements
     * based on the birdData passed into the function as an argument. It writes the
     * name of the bird as one element and the bird details as a separate element.
@@ -119,6 +126,9 @@ var findTheBirds = (function(){
     }
     else{
       for (var i = 0; i<birdData.length; i++){
+
+        // Handle if finding birds by by species (then write location to name)
+        // or by location (write bird names to page)
         if(speciesFilterOn == true){
           var div1 = createTextNode('DIV', ((i+1)+ ': '+ birdData[i].locName));
         }
@@ -128,9 +138,11 @@ var findTheBirds = (function(){
         div1.className = 'bird';
         div1.id = i + 'bird';
 
+        // Normalize names for links
         var latinString = normalizeName(birdData[i].sciName);
         var commString = normalizeName(birdData[i].comName);
 
+        // Create text nodes with most bird info
         var text = '<br>Common name: <a href="https://www.allaboutbirds.org/guide/'+commString+'"target="_blank">'+birdData[i].comName+'</a><br>';
         text += 'Latin name: <a href="https://en.wikipedia.org/wiki/'+latinString+'"target="_blank">'+birdData[i].sciName+'</a><br>';
         text += 'How many: '+birdData[i].howMany+ '<br>';
@@ -168,7 +180,7 @@ var findTheBirds = (function(){
 
   }
 
-  /** This function allows user to toggle visibility of of birdDetails
+  /** This function allows user to toggle visibility of birdDetails
     * by manipulating the class name of the element. It takes an event as
     * an argument.
     */
@@ -220,6 +232,8 @@ var findTheBirds = (function(){
     return newRadius;
   }
 
+  /** This function normalizes bird names to be used in URLs.
+    */
   function normalizeName(birdDataObj){
     var splitTheName = splitName(birdDataObj);
     // Joins the array with underscore
@@ -228,6 +242,9 @@ var findTheBirds = (function(){
     return combinedName;
   }
 
+  /** This function takes a bird name as a string, removes apostrophes, then
+    * splits the string into an array of strings.
+    */
   function splitName(birdDataObj){
     // Removes apostrophes
     var theName = birdDataObj.replace("'", "");
@@ -236,17 +253,21 @@ var findTheBirds = (function(){
     return splitTheName;
   }
 
+  /** This function will be called upon to return the scientific name published
+    * by the autocomplete module. This module will use the sciName in the ebird
+    * AJAX request to find birds by species.
+    */
   var theSciName = "test";
   function getSciName(sciName){
     theSciName = sciName
     console.log(theSciName);
     return theSciName;
   }
+
   /** This is a render function invoked earlier in the module to collect necessary
     * DOM elements on the page and attach event listeners to those DOM elements.
     * It also subscribes to all published data to the pubsub class.
     */
-
   function render(){
     // Access DOM elements;
     var output = document.getElementById('output');

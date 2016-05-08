@@ -1,4 +1,5 @@
 $(function() {
+// Relevant functions at the end of the file.
 
 var sciNameList = ["Struthio camelus",
 "Struthio molybdophanes",
@@ -29956,6 +29957,11 @@ $( "#species" ).autocomplete({
       source: comNameList
     });
 
+/** This function associates the common species name located in the species input
+  * element, finds the index of the associated element in the common species array
+  * above, then uses that index to publish the scientific bird name from the
+  * sciName array.
+  */
 function comNameToSciName(){
   var selectedSpecies = species.value;
   var index = comNameList.indexOf(selectedSpecies);

@@ -12,9 +12,9 @@
 </head>
 
 <body>
-  <div = id='myForm'>
-    <br>
-    <form>
+  <div id='container'>
+    <!-- <br> -->
+    <form id='myForm'>
       <label>Zip Code: </label><input type='text' id='zipCode' autofocus></input>
       <label>Days Ago: </label><input type='number' min='1' max='30' value='7' id='date'></input>
       <span style='display: none'id='speciesSpan'>
@@ -25,14 +25,21 @@
       <br><br>
       <label>Filter by species: </label><input type='checkbox' id='filter2'>
       <button id='logLocation' type='button'>Go to Current Location</button>
+      <br><br>
     </form>
-  </div><br><br>
-  <div id='myMap'>
   </div>
-  <div id='output'>
-  </div>
+  <section class='clearfix'>
+    <div id='container'>
+      <div id='myMap'>
+      </div>
+      <div id='output'>
+      </div>
+    </div>
+  </section>
 
-
+  <footer>
+    <p>Footer</p>
+  </footer>
 
   <script src='js/pubsub.js'></script>
   <script src='js/onLoadModule.js'></script>

@@ -1,56 +1,95 @@
 body {
   width: 1060px;
   margin: 0 auto;
+  background-color: lightslategrey;
+}
+
+html{
+  background-color: antiquewhite;
+  height:100%
 }
 
 #myForm {
   margin: 0 auto;
+  background: antiquewhite;
+  padding: 10px;
 }
 
 label {
   padding-left: 3%;
 }
 
+footer{
+  background-color: red;
+  clear:both;
+}
 .button{
   margin-left: 3%;
   background: lightgreen;
   padding: 1%;
   border-radius: 10px;
-  box-shadow: 2px 2px 2px black;
+  box-shadow: 2px 1px 1px black;
   cursor: pointer;
 }
+
+
+#container{
+  width: 96%;
+  margin: auto;
+  padding-top: 3%;
+  height:100%;
+}
+
+.clearfix:after,
+.clearfix:after{
+  content: "";
+  display: table;
+}
+
+.clearfix:after{
+  clear: both;
+}
+
 #myMap {
-  width: 600px;
+  width: 58%;
   height: 400px;
   margin: 0 auto;
   float: left;
-
+  border-radius: 10px;
+  border: solid;
+  border-width: 2px;
 
 }
-#details {
+/*#details {
   width: 600px;
   height: 400px;
   margin: 0 auto;
   background: lightblue;
   float: left;
 
-}
+}*/
 #output{
   float: right;
-  width: 400px;
+  width: 36%;
   max-width: 400px;
-}
-
-#myMap{
-  float: left;
+  max-height: 378px;
+  background: lightblue;
+  padding: 10px;
+  padding-left: 15px;
+  overflow: scroll;
+  border-radius: 10px;
+  border: solid;
+  border-width: 2px;
 }
 
 .birdDetails{
   background: lightgreen;
-  margin-left: 15px;
+  margin: 5px;
   border-radius: 10px;
   padding-left: 10px;
   cursor: pointer;
+  border: solid;
+  border-width: 1px;
 }
 .bird{
   cursor: pointer;

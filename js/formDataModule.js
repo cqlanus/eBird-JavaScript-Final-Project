@@ -15,7 +15,8 @@ var formData = (function(){
   }
 
   // Handler function that instantiates new form object, then publishes
-  // it to the events module.
+  // it to the events module. Error handing ensures zipCode is provided, that
+  // date is within range, and that a species is provided (if necessary).
   function triggerNewData(e){
     newForm = new FormElements(zipCode, date, species);
     if (newForm.zipCode == ''){
@@ -42,11 +43,13 @@ var formData = (function(){
     date.value = 7;
   }
 
-  // Testing here
+  // Handler that updates zipCode on map drag.
   function updateZipcode(zip){
     zipCode.value = zip;
   }
 
+  // Publishes the state of the reset button to the pubsub to decouple the form
+  // module from other modules on the map.
   function pressReset(){
     events.emit('resetBtn', true);
   }
@@ -68,6 +71,10 @@ var formData = (function(){
 
   }
 
+  /** This is a render function invoked earlier in the module to collect necessary
+    * DOM elements on the page and attach event listeners to those DOM elements.
+    * It also subscribes to all published data to the pubsub class.
+    */
   function render(){
 
     // Gets the important DOM elements
@@ -88,6 +95,7 @@ var formData = (function(){
 
     // Attaches event listeners to those DOM elements.
     findBirds.addEventListener('click', triggerNewData);
+
     //reset.addEventListener('click', clearBox);
     reset.addEventListener('click', pressReset);
     filter2.addEventListener('click', speciesFilter)

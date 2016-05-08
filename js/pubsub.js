@@ -1,4 +1,8 @@
 //events - a super-basic Javascript (publish subscribe) pattern
+// Borrowed from the LearnCode.academy YouTube Channel series called
+// Modular Javascript #4: Pubsub JavaScript Design Pattern.
+// https://www.youtube.com/watch?v=nQRXi1SVOow
+
 
 var events = {
   events: {},

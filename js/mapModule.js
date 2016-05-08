@@ -35,24 +35,32 @@ var setTheMap = (function(){
 
 
           // Reverse geocoder acts to create and publish a zip code on each drag event
-          var geocoder = new google.maps.Geocoder;
-
-          geocoder.geocode({'latLng': newGeoObj}, function(results, status){
-            if (status == google.maps.GeocoderStatus.OK) {
-              var address = results[0].address_components;
-              for (var i = 0; i<address.length; i++){
-                // find results that can be coerced to number, and whose length is 5
-                if (parseInt(address[i].long_name) && address[i].long_name.length == 5) {
-                  var zip = address[i].long_name;
-                  events.emit('zipCodeFromDrag', zip);
-                }
-              }
-            }
-          });
+          writeZipCode(newGeoObj);
       });
       // console.log(myLatLng);
 
       map.addListener('zoom_changed', getMapZoom);
+  }
+
+  /** This function uses Google's reverse geocoder API to convert the latLng geoObj
+    * to a zipCode, then publish it to the pubsub so that it can be written to
+    * the zipCode input element on a map drag event.
+    */
+  function writeZipCode(geoObj){
+    var geocoder = new google.maps.Geocoder;
+
+    geocoder.geocode({'latLng': geoObj}, function(results, status){
+      if (status == google.maps.GeocoderStatus.OK) {
+        var address = results[0].address_components;
+        for (var i = 0; i<address.length; i++){
+          // find results that can be coerced to number, and whose length is 5
+          if (parseInt(address[i].long_name) && address[i].long_name.length == 5) {
+            var zip = address[i].long_name;
+            events.emit('zipCodeFromDrag', zip);
+          }
+        }
+      }
+    });
   }
 
   /** This function is invoked when new bird data is found in the pubsub. Its job
@@ -134,6 +142,10 @@ var setTheMap = (function(){
     events.emit('mapZoom', currentZoom);
   }
 
+  /** This is a render function invoked earlier in the module to collect necessary
+    * DOM elements on the page and attach event listeners to those DOM elements.
+    * It also subscribes to all published data to the pubsub class.
+    */
   function render(){
     // Handling all the subscription to the pubsub module below.
     events.on('birdData', plotBirdData);

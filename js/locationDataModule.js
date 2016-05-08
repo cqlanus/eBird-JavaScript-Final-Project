@@ -9,9 +9,9 @@ var getTheLocation = (function(){
 
   render();
 
-  // Makes the AJAX request to convert Zip to lat/lng.
+  // Makes the AJAX request to convert Zip (from a published form object) to lat/lng.
   function getGeo(newForm){
-    // make an send an XmlHttpRequest
+    // make and send an XmlHttpRequest
     var xhr = new XMLHttpRequest();
     xhr.open("GET","http://maps.googleapis.com/maps/api/geocode/json?address="+newForm.zipCode, true);
     xhr.send();
@@ -32,25 +32,56 @@ var getTheLocation = (function(){
     }
   }
 
+  /** This function is called on click of the page's get current location button.
+    * It uses JavaScript's .getCurrentPosition method to get the current location
+    * of the user, if allowed.
+  */
   function getLocation(){
+    if(navigator.geolocation){
+       // timeout at 60000 milliseconds (60 seconds)
+       var options = {timeout:60000};
+       navigator.geolocation.getCurrentPosition(getPosition, errorHandler, options);
+    }
 
-            if(navigator.geolocation){
-               // timeout at 60000 milliseconds (60 seconds)
-               var options = {timeout:60000};
-               navigator.geolocation.getCurrentPosition(getPosition, errorHandler, options);
-            }
+    else{
+       alert("Sorry, browser does not support geolocation!");
+    }
+  }
 
-            else{
-               alert("Sorry, browser does not support geolocation!");
-            }
-         }
-
+  /** This function converts the position returned in the reverse geocoder into
+    * a latLng geoObject and passes that into the writeZipCode function.
+    */
   function getPosition(position){
     console.log(position);
     var currentLoc = {lat: position.coords.latitude, lng: position.coords.longitude};
     events.emit('newGeoObj', currentLoc);
+
+    writeZipCode(currentLoc);
   }
 
+
+  /** This function uses Google's reverse geocoder API to convert the map's
+    * current latLng geoObject into a zipcode and publish that to the zip code.
+    */
+  function writeZipCode(geoObj){
+    var geocoder = new google.maps.Geocoder;
+
+    geocoder.geocode({'latLng': geoObj}, function(results, status){
+      if (status == google.maps.GeocoderStatus.OK) {
+        var address = results[0].address_components;
+        for (var i = 0; i<address.length; i++){
+          // find results that can be coerced to number, and whose length is 5
+          // AKA find a zipcode in the address components.
+          if (parseInt(address[i].long_name) && address[i].long_name.length == 5) {
+            var zip = address[i].long_name;
+            events.emit('zipCodeFromDrag', zip);
+          }
+        }
+      }
+    });
+  }
+
+  // Use this function as an argument in the getLocation function.
   function errorHandler(err) {
             if(err.code == 1) {
                console.log("Error: Access is denied!");
@@ -61,6 +92,10 @@ var getTheLocation = (function(){
             }
          }
 
+   /** This is a render function invoked earlier in the module to collect necessary
+     * DOM elements on the page and attach event listeners to those DOM elements.
+     * It also subscribes to all published data to the pubsub class.
+     */
   function render(){
     // Access DOM elements.
     var submit = document.getElementById('submit');
