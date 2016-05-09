@@ -10,6 +10,7 @@ body {
   width: 1060px;
   margin: auto;
   background-color: lightslategrey;
+  box-shadow: 5px 5px 3px black;
 }
 
 header{
@@ -23,7 +24,14 @@ header{
 
 h1{
   text-align: center;
-  color: white;
+  color: orange;
+  text-shadow: 2px 2px 2px black;
+  padding-top: 50px;
+  font-family: sans-serif;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: underline;
+
 }
 
 #formContainer{
@@ -39,6 +47,8 @@ h1{
   border-radius: 10px;
   border: solid;
   border-width: 2px;
+  font-family: sans-serif;
+  font-weight: bold;
 }
 
 label {
@@ -54,6 +64,14 @@ label {
   cursor: pointer;
 }
 
+#logLocation {
+  border: none;
+  font-family: inherit;;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+
 #lowerContainer{
   width: 96%;
   margin: auto;
@@ -61,9 +79,13 @@ label {
 }
 
 footer{
-  background-color: red;
+  background-color: antiquewhite;
   clear:both;
   text-align: center;
+  padding: 5px;
+  margin: 5% auto;
+  /*width: 1040px;*/
+
 }
 
 .clearfix:after,
@@ -92,7 +114,7 @@ footer{
   width: 36%;
   max-width: 400px;
   max-height: 378px;
-  background: lightblue;
+  background: antiquewhite;
   padding: 10px;
   padding-left: 15px;
   overflow: scroll;
