@@ -12,9 +12,11 @@
 </head>
 
 <body>
-  <div id='container'>
-    <!-- <br> -->
-    <form id='myForm'>
+  <header>
+  <h1>Bird Finder</h1>
+  </header>
+  <div id='formContainer'>
+    <form id='myForm'>    <br>
       <label>Zip Code: </label><input type='text' id='zipCode' autofocus></input>
       <label>Days Ago: </label><input type='number' min='1' max='30' value='7' id='date'></input>
       <span style='display: none'id='speciesSpan'>
@@ -29,7 +31,7 @@
     </form>
   </div>
   <section class='clearfix'>
-    <div id='container'>
+    <div id='lowerContainer'>
       <div id='myMap'>
       </div>
       <div id='output'>
@@ -38,7 +40,7 @@
   </section>
 
   <footer>
-    <p>Footer</p>
+    <p>Footer Content</p>
   </footer>
 
   <script src='js/pubsub.js'></script>

@@ -1,28 +1,50 @@
+html{
+  background-color: antiquewhite;
+  height:100%;
+  background: url(images/IMG_3262.jpg);
+  background-size: contain;
+
+}
+
 body {
   width: 1060px;
-  margin: 0 auto;
+  margin: auto;
   background-color: lightslategrey;
 }
 
-html{
-  background-color: antiquewhite;
-  height:100%
+header{
+  height: 100%;
+  width: 100%;
+  background: url(images/IMG_1749.jpg);
+  background-size: 1060px;
+  background-position: center;
+  height: 10em;
+}
+
+h1{
+  text-align: center;
+  color: white;
+}
+
+#formContainer{
+  width: 96%;
+  margin: auto;
+  padding-top: 1%;
+
 }
 
 #myForm {
-  margin: 0 auto;
   background: antiquewhite;
-  padding: 10px;
+  padding: 1%;
+  border-radius: 10px;
+  border: solid;
+  border-width: 2px;
 }
 
 label {
   padding-left: 3%;
 }
 
-footer{
-  background-color: red;
-  clear:both;
-}
 .button{
   margin-left: 3%;
   background: lightgreen;
@@ -32,12 +54,16 @@ footer{
   cursor: pointer;
 }
 
-
-#container{
+#lowerContainer{
   width: 96%;
   margin: auto;
   padding-top: 3%;
-  height:100%;
+}
+
+footer{
+  background-color: red;
+  clear:both;
+  text-align: center;
 }
 
 .clearfix:after,
@@ -60,14 +86,7 @@ footer{
   border-width: 2px;
 
 }
-/*#details {
-  width: 600px;
-  height: 400px;
-  margin: 0 auto;
-  background: lightblue;
-  float: left;
 
-}*/
 #output{
   float: right;
   width: 36%;
@@ -91,12 +110,15 @@ footer{
   border: solid;
   border-width: 1px;
 }
+
 .bird{
   cursor: pointer;
 }
+
 .hidden{
   display:none;
 }
+
 .highlight{
   background-color: yellow;
 }
